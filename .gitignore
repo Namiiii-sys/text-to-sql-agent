@@ -42,7 +42,6 @@ cover/
 # Custom
 .venv
 .env
-data/*.sqlite
 cache.sqlite
 node_modules
 .next
