@@ -46,3 +46,6 @@ data/*.sqlite
 cache.sqlite
 node_modules
 .next
+AGENTS.md
+DECISIONS.md
+docs/PLAN.md
