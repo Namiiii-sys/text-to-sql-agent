@@ -21,7 +21,7 @@ class LLMResult:
     provider: str
     cached: bool
 
-# ── Cache helpers ──────────────────────────────────────────────
+# Cache helpers
 
 def _init_cache_db(path=None):
     p = path or _CACHE_PATH
@@ -44,7 +44,7 @@ def _cache_put(con, key, result_dict):
     con.commit()
 
 
-# ── Provider adapters ─────────────────────────────────────────
+#  Provider adapters
 
 def _call_groq(messages, model, temperature, seed, json_mode):
     client = groq.Groq()
@@ -70,7 +70,7 @@ def _call_gemini(messages, model, temperature, seed, json_mode):
                                           config=config)
     return resp.text, resp.usage_metadata.prompt_token_count, resp.usage_metadata.candidates_token_count
 
-# ── Main entry point ──────────────────────────────────────────
+# Main entry point 
 
 _BACKOFF = [2, 4, 8]
 
@@ -102,7 +102,7 @@ def generate(messages, model=None, temperature=0, seed=None, json_mode=False,
             time.sleep(wait)
 
 
-# ── JSON parsing helper ───────────────────────────────────────
+#  JSON parsing helper
 
 def parse_json(text, pydantic_model, _repair_fn=None):
     """Strip surrounding text, validate against pydantic_model, allow one repair."""

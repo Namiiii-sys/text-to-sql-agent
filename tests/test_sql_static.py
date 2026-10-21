@@ -1,4 +1,3 @@
-"""Unit tests for AST-based SQL guardrail check_sql."""
 import pytest
 from app.guardrails.sql_static import check_sql
 
