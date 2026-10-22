@@ -12,9 +12,11 @@ def open_ro(path: str | pathlib.Path, timeout_s: float = 5.0) -> sqlite3.Connect
 
 
 def execute_query(
-    con: sqlite3.Connection, sql: str, max_rows: int = 200
+    con: sqlite3.Connection, sql: str, max_rows: int = 200, timeout_s: float = 5.0
 ) -> tuple[list[str], list[tuple], bool]:
     """Execute SQL query, capping output at max_rows with truncated flag."""
+    deadline = time.time() + timeout_s
+    con.set_progress_handler(lambda: 1 if time.time() > deadline else 0, 1000)
     cur = con.cursor()
     cur.execute(sql)
     cols = [d[0] for d in cur.description] if cur.description else []

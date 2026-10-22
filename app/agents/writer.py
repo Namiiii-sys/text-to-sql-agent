@@ -15,6 +15,7 @@ class Action(BaseModel):
 
 
 WRITER_SYSTEM_PROMPT = """You are a SQLite Text-to-SQL analyst. Your goal is to write a valid SQLite SELECT query answering the user's question.
+IMPORTANT: Respond ONLY with a raw JSON object. Never include any reasoning, explanation, or text outside the JSON.
 
 RULES:
 1. Only query tables and columns you have inspected with tools. Never guess schema names.
@@ -62,6 +63,8 @@ def writer(
     for _ in range(max_steps):
         res = gen(messages, json_mode=True)
         calls += 1
+        cache_tag = "CACHE HIT" if res.cached else "API CALL"
+        print(f"  [LLM] {cache_tag} ({res.latency_ms}ms, in={res.tokens_in}, out={res.tokens_out})")
         try:
             action, _ = parse_json(res.text, Action)
         except Exception as e:

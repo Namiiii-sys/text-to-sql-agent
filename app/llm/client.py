@@ -95,7 +95,7 @@ def generate(messages, model=None, temperature=0, seed=None, json_mode=False,
             _cache_put(con, key, {k: v for k, v in asdict(result).items() if k != "cached"})
             return result
         except Exception as e:
-            if "rate" not in str(e).lower() and "limit" not in str(e).lower():
+            if not any(k in str(e).lower() for k in ("rate limit", "rate_limit", "429", "quota")):
                 raise
             if i == len(_BACKOFF) - 1:
                 raise QuotaExceeded(f"Rate-limited after {sum(_BACKOFF)}s backoff") from e
